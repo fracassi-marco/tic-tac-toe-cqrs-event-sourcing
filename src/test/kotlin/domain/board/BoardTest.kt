@@ -29,4 +29,11 @@ class BoardTest {
 
         assertThrows<RuntimeException> { board.markCell(0, 0, "player2Id") }
     }
+
+    @Test
+    fun `can not mark out of board cell`() {
+        val board = Board("boardId", "player1Id", "player2Id")
+
+        assertThrows<RuntimeException> { board.markCell(0, 3, "player2Id") }
+    }
 }

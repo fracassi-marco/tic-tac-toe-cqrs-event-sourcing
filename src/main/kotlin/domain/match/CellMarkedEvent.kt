@@ -1,11 +1,10 @@
-package domain.board
+package domain.match
 
 import domain.Event
 
 data class CellMarkedEvent(
-    private val boardId: String,
+    private val matchId: String,
     val row: Int,
     val column: Int,
     val playerId: String
-) : Event {
-}
+) : Event

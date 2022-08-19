@@ -1,4 +1,4 @@
-package domain.board
+package domain.match
 
 class Grid {
     private val cells = listOf(
@@ -17,4 +17,20 @@ class Grid {
 
     private fun isOutOfBounds(row: Int, column: Int) = (row < 0 || row > cells.size
             || column < 0 || column > cells[row].size)
+
+    fun getWinner(): String? {
+        (0 until 2).forEach {
+            if(cells[it][0] == cells[it][1] && cells[it][0] == cells[it][2])
+                return cells[it][0]
+
+            if(cells[0][it] == cells[1][it] && cells[0][it] == cells[2][it])
+                return cells[0][it]
+        }
+        if(cells[0][0] == cells[1][1] && cells[0][0] == cells[2][2])
+            return cells[0][0]
+        if(cells[0][2] == cells[1][1] && cells[0][2] == cells[2][0])
+            return cells[0][2]
+
+        return null
+    }
 }

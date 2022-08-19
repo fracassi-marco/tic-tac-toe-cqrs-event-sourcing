@@ -1,5 +1,5 @@
 package domain.match
 
-import domain.Event
+import domain.DomainEvent
 
-data class MatchWonEvent(private val matchId: String, private val playerId: String): Event
+data class MatchWonEvent(private val matchId: String, private val playerId: String): DomainEvent

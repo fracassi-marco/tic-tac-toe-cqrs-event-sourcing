@@ -1,10 +1,10 @@
 package domain.match
 
-import domain.Event
+import domain.DomainEvent
 
 data class Match(private val id: String, private val player1Id: String, val player2Id: String) {
 
-    private val newEvents = mutableListOf<Event>()
+    private val newEvents = mutableListOf<DomainEvent>()
 
     init {
         newEvents.add(MatchCreatedEvent(id, player1Id, player2Id))
@@ -26,11 +26,10 @@ data class Match(private val id: String, private val player1Id: String, val play
         }
     }
 
-    private fun consume(event: CellMarkedEvent) {
-        grid.mark(event.row, event.column, event.playerId)
-    }
-
-    private fun consume(event: MatchWonEvent) {
+    private fun consume(event: DomainEvent) {
+        when(event) {
+            is CellMarkedEvent -> grid.mark(event.row, event.column, event.playerId)
+        }
     }
 
     fun newEvents() = newEvents

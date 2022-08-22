@@ -1,8 +1,9 @@
 package domain.match
 
 import domain.DomainEvent
+import java.util.*
 
-data class Match(private val id: String, private val player1Id: String, val player2Id: String) {
+data class Match(val id: UUID, private val player1Id: String, val player2Id: String) {
 
     private val newEvents = mutableListOf<DomainEvent>()
 
@@ -16,14 +17,15 @@ data class Match(private val id: String, private val player1Id: String, val play
         if (grid.isNotMarkable(row, column)) {
             throw RuntimeException()
         }
-        val event = CellMarkedEvent(id, row, column, playerId)
+        applyEvent(CellMarkedEvent(id, row, column, playerId))
+        grid.getWinner()?.let { winner ->
+            applyEvent(MatchWonEvent(id, winner))
+        }
+    }
+
+    private fun applyEvent(event: DomainEvent) {
         newEvents.add(event)
         consume(event)
-        grid.getWinner()?.let { winner ->
-            val matchWonEvent = MatchWonEvent(id, winner)
-            newEvents.add(matchWonEvent)
-            consume(matchWonEvent)
-        }
     }
 
     private fun consume(event: DomainEvent) {

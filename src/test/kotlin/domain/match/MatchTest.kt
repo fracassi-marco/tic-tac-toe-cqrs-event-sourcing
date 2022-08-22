@@ -3,7 +3,6 @@ package domain.match
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import java.lang.RuntimeException
 import java.util.*
 
 class MatchTest {
@@ -13,7 +12,9 @@ class MatchTest {
     fun `generate match created event`() {
         val match = Match(matchId, "player1Id", "player2Id")
 
-        assertThat(match.newEvents().single()).isEqualTo(MatchCreatedEvent(matchId, "player1Id", "player2Id"))
+        val event = match.newEvents().single() as MatchCreatedEvent
+        assertThat(event.player1Id).isEqualTo("player1Id")
+        assertThat(event.player2Id).isEqualTo("player2Id")
     }
 
     @Test
@@ -22,7 +23,10 @@ class MatchTest {
 
         match.markCell(0, 0, "player1Id")
 
-        assertThat(match.newEvents().last()).isEqualTo(CellMarkedEvent(matchId, 0, 0, "player1Id"))
+        val event = match.newEvents().last() as CellMarkedEvent
+        assertThat(event.row).isEqualTo(0)
+        assertThat(event.column).isEqualTo(0)
+        assertThat(event.playerId).isEqualTo("player1Id")
     }
 
     @Test
@@ -33,7 +37,8 @@ class MatchTest {
         match.markCell(0, 1, "player1Id")
         match.markCell(0, 2, "player1Id")
 
-        assertThat(match.newEvents().last()).isEqualTo(MatchWonEvent(matchId, "player1Id"))
+        val event = match.newEvents().last() as MatchWonEvent
+        assertThat(event.playerId).isEqualTo("player1Id")
     }
 
     @Test
@@ -49,5 +54,17 @@ class MatchTest {
         val match = Match(matchId, "player1Id", "player2Id")
 
         assertThrows<RuntimeException> { match.markCell(0, 3, "player2Id") }
+    }
+
+    @Test
+    fun `build from events`() {
+        val match = Match(
+            matchId, listOf(
+                MatchCreatedEvent(matchId, "player1Id", "player2Id"),
+                CellMarkedEvent(matchId, 0, 0, "player1Id")
+            )
+        )
+
+        assertThrows<RuntimeException> { match.markCell(0, 0, "player2Id") }
     }
 }

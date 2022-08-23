@@ -1,5 +1,6 @@
 package domain
 
 interface EventBus {
-    fun post(event: DomainEvent)
+    fun publish(event: DomainEvent)
+    fun register(subscriber: Subscriber<DomainEvent>)
 }

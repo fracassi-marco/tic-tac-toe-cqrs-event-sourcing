@@ -25,6 +25,6 @@ class MarkCellUseCaseTest {
         MarkCellUseCase(eventRepository, eventBus).process(MarkCellCommand(matchId, 1, 2, "player1Id"))
 
         verify { eventRepository.store(ofType(CellMarkedEvent::class)) }
-        verify { eventBus.post(ofType(CellMarkedEvent::class)) }
+        verify { eventBus.publish(ofType(CellMarkedEvent::class)) }
     }
 }

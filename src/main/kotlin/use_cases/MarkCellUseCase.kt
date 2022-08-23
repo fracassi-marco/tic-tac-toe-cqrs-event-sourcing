@@ -12,7 +12,7 @@ class MarkCellUseCase(private val eventRepository: EventRepository, private val 
         match.markCell(command.row, command.column, command.playerId)
         match.newEvents().forEach {
             eventRepository.store(it)
-            eventBus.post(it)
+            eventBus.publish(it)
         }
         return match
     }

@@ -5,6 +5,7 @@ import java.util.*
 
 data class Match(val id: UUID, val events: List<DomainEvent>) {
 
+    private var alreadyWon = false
     private val grid = Grid()
     private val newEvents = mutableListOf<DomainEvent>()
 
@@ -17,6 +18,9 @@ data class Match(val id: UUID, val events: List<DomainEvent>) {
     }
 
     fun markCell(row: Int, column: Int, playerId: String) {
+        if(alreadyWon) {
+            throw RuntimeException()
+        }
         if (grid.isNotMarkable(row, column)) {
             throw RuntimeException()
         }
@@ -34,6 +38,7 @@ data class Match(val id: UUID, val events: List<DomainEvent>) {
     private fun applyEvent(event: DomainEvent) {
         when(event) {
             is CellMarkedEvent -> grid.mark(event.row, event.column, event.playerId)
+            is MatchWonEvent -> alreadyWon = true
         }
     }
 

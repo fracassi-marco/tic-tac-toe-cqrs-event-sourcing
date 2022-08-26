@@ -11,7 +11,7 @@ class GetRankingUseCase(private val rankingRepository: RankingRepository) : Subs
     override fun handle(event: DomainEvent) {
         when (event) {
             is CellMarkedEvent -> rankingRepository.incrementMarks(event.playerId)
-            is MatchWonEvent -> rankingRepository.incrementWon(event.playerId)
+            is MatchWonEvent -> rankingRepository.incrementWons(event.playerId)
         }
     }
 

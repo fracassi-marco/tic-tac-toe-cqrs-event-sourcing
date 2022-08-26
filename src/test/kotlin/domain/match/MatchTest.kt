@@ -57,6 +57,17 @@ class MatchTest {
     }
 
     @Test
+    fun `can not mark cell when match in already won`() {
+        val match = Match(matchId, "player1Id", "player2Id")
+
+        match.markCell(0, 0, "player1Id")
+        match.markCell(0, 1, "player1Id")
+        match.markCell(0, 2, "player1Id")
+
+        assertThrows<RuntimeException> { match.markCell(1, 1, "player2Id") }
+    }
+
+    @Test
     fun `build from events`() {
         val match = Match(
             matchId, listOf(

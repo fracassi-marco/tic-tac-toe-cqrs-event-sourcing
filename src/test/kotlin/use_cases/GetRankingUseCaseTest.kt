@@ -26,7 +26,7 @@ class GetRankingUseCaseTest {
     fun `increment wins counter`() {
         GetRankingUseCase(rankingRepository).handle(MatchWonEvent(UUID.randomUUID(), "player1"))
 
-        verify { rankingRepository.incrementWon("player1") }
+        verify { rankingRepository.incrementWons("player1") }
     }
 
     @Test

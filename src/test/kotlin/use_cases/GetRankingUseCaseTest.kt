@@ -17,14 +17,14 @@ class GetRankingUseCaseTest {
 
     @Test
     fun `increment marked cell counter`() {
-        GetRankingUseCase(rankingRepository).handle(CellMarkedEvent(UUID.randomUUID(), 0, 0, "player1"))
+        GetRankingUseCase(rankingRepository).handle(CellMarkedEvent(UUID.randomUUID(), 0, 0, "player1", 1))
 
         verify { rankingRepository.incrementMarks("player1") }
     }
 
     @Test
     fun `increment wins counter`() {
-        GetRankingUseCase(rankingRepository).handle(MatchWonEvent(UUID.randomUUID(), "player1"))
+        GetRankingUseCase(rankingRepository).handle(MatchWonEvent(UUID.randomUUID(), "player1", 2))
 
         verify { rankingRepository.incrementWons("player1") }
     }

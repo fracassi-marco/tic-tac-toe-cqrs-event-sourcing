@@ -4,8 +4,7 @@ import domain.DomainEvent
 import domain.Subscriber
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import java.time.LocalDateTime.now
-import java.util.*
+import java.util.UUID.randomUUID
 
 class SyncEventBusTest {
     private val eventBus = SyncEventBus()
@@ -24,16 +23,11 @@ class SyncEventBusTest {
         val subscriber2 = DummySubscriber()
         eventBus.register(subscriber1)
         eventBus.register(subscriber2)
-        eventBus.publish(EventA())
-        eventBus.publish(EventA())
+        eventBus.publish(DomainEvent(randomUUID(), 0))
+        eventBus.publish(DomainEvent(randomUUID(), 0))
 
         assertThat(subscriber1.handledEventCount).isEqualTo(2)
         assertThat(subscriber2.handledEventCount).isEqualTo(2)
-    }
-
-    class EventA: DomainEvent {
-        override fun aggregateId()= UUID.randomUUID()
-        override fun timestamp()= now()
     }
 
     class DummySubscriber: Subscriber<DomainEvent> {

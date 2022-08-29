@@ -71,11 +71,12 @@ class MatchTest {
     fun `build from events`() {
         val match = Match(
             matchId, listOf(
-                MatchCreatedEvent(matchId, "player1Id", "player2Id"),
-                CellMarkedEvent(matchId, 0, 0, "player1Id")
+                MatchCreatedEvent(matchId, "player1Id", "player2Id", 0),
+                CellMarkedEvent(matchId, 0, 0, "player1Id", 1)
             )
         )
 
+        assertThat(match.version).isEqualTo(1)
         assertThrows<RuntimeException> { match.markCell(0, 0, "player2Id") }
     }
 }

@@ -19,7 +19,7 @@ class CreateMatchUseCaseTest {
 
         CreateMatchUseCase(eventRepository, eventBus).process(command)
 
-        verify { eventRepository.store(ofType(MatchCreatedEvent::class)) }
+        verify { eventRepository.store(ofType(MatchCreatedEvent::class), 0) }
         verify { eventBus.publish(ofType(MatchCreatedEvent::class)) }
     }
 }

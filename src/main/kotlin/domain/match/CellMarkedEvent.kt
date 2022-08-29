@@ -10,8 +10,5 @@ class CellMarkedEvent(
     val row: Int,
     val column: Int,
     val playerId: String,
-    val timestamp: LocalDateTime = now()
-) : DomainEvent {
-    override fun aggregateId() = matchId
-    override fun timestamp() = timestamp
-}
+    val version: Long,
+) : DomainEvent(matchId, version)

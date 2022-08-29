@@ -10,7 +10,7 @@ class CreateMatchUseCase(private val eventRepository: EventRepository, private v
     fun process(command: CreateMatchCommand): Match {
         val match = Match(randomUUID(), command.player1Id, command.player2Id)
         match.newEvents().forEach {
-            eventRepository.store(it)
+            eventRepository.store(it, match.version)
             eventBus.publish(it)
         }
         return match
